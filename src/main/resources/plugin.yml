@@ -2,3 +2,4 @@ name: SpeedyMissions
 version: '0.1.0'
 main: me.timwastaken.speedyMissions.SpeedyMissions
 api-version: '1.21'
+depend: [CommandAPI]
