@@ -3,10 +3,7 @@ package me.timwastaken.speedyMissions.missions;
 import me.timwastaken.speedyMissions.GameManager;
 import org.bukkit.Material;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class MissionFactory {
@@ -19,7 +16,7 @@ public class MissionFactory {
 
     private static final Map<Class<?>, Supplier<Mission>> missionFactories = Map.of(
             ObtainItemMission.class, () -> {
-                Material[] materials = Material.values();
+                Material[] materials = Arrays.stream(Material.values()).filter(Material::isItem).toArray(Material[]::new);
                 return new ObtainItemMission(GameManager.getInstance(), materials[rnd.nextInt(materials.length)]);
             },
             KillPlayerMission.class, () -> new KillPlayerMission(GameManager.getInstance())

@@ -54,10 +54,7 @@ public class ObtainItemMission extends TickMission {
         TextComponent text = new TextComponent(
                 Notifications.getChatAnnouncement(this.getMissionDescription())
         );
-        text.setHoverEvent(new HoverEvent(
-                HoverEvent.Action.SHOW_ITEM,
-                new Item(this.itemMaterial.getKey().toString(), 1, ItemTag.ofNbt(Notifications.getItemName(this.itemMaterial)))
-        ));
+
         TextComponent wikiLink = new TextComponent(
                 ChatColor.GREEN + " [Wiki]"
         );

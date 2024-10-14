@@ -18,7 +18,7 @@ public class ScoreboardWrapper {
                 .addLine(Notifications.getMissionDescriptionTitle());
         List<String> descriptionLines = splitStringIntoLines(
                 state.getActiveMission().getMissionDescription(),
-                38
+                24
         );
         descriptionLines.forEach(builder::addLine);
         builder.addEmptyLine();

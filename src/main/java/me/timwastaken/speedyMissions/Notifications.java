@@ -110,4 +110,38 @@ public class Notifications {
                 missionDescription
         );
     }
+
+    public static String getCommandFailedBecauseGameNotRunningNotification() {
+        return String.format(
+                "%s%s%s",
+                PREFIX,
+                ChatColor.DARK_RED,
+                "You can only run this command while the game is running!"
+        );
+    }
+
+    public static String getPlayerHasNoScoreErrorNotification(Player p) {
+        return String.format(
+                "%s%sPlayer '%s' has no in-game score!",
+                PREFIX,
+                ChatColor.DARK_RED,
+                p.getName()
+        );
+    }
+
+    public static String getPlayerScoreModificationSuccessNotification(Player p, int newScore) {
+        return String.format(
+                "%s%sSuccessfully changed %s%s%s%s%s's score to %s%s%d",
+                PREFIX,
+                ChatColor.GREEN,
+                ChatColor.BLUE,
+                ChatColor.ITALIC,
+                p.getName(),
+                ChatColor.RESET,
+                ChatColor.GREEN,
+                ChatColor.GRAY,
+                ChatColor.BOLD,
+                newScore
+        );
+    }
 }

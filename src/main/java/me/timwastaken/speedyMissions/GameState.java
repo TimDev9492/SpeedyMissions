@@ -43,6 +43,11 @@ public class GameState {
         return activeMission;
     }
 
+    /**
+     * Check if the player has a score.
+     * @param p The player to check.
+     * @throws IllegalArgumentException If the player has no score.
+     */
     private void checkPlayerScore(Player p) {
         if (!this.playerScores.containsKey(p.getUniqueId())) throw new IllegalArgumentException(p.getName() + " has no score!");
     }
@@ -52,6 +57,12 @@ public class GameState {
         return this.playerScores.get(p.getUniqueId());
     }
 
+    /**
+     * Set the player's score.
+     * @param p The player to set the score for.
+     * @param newScore The new score.
+     * @throws IllegalArgumentException If the player has no score.
+     */
     public void setPlayerScore(Player p, int newScore) {
         this.checkPlayerScore(p);
         this.playerScores.put(p.getUniqueId(), newScore);
@@ -61,6 +72,12 @@ public class GameState {
         return playerScores;
     }
 
+    /**
+     * Add a score to the player's score.
+     * @param p The player to add the score to.
+     * @param delta The score to add.
+     * @throws IllegalArgumentException If the player has no score.
+     */
     public void addPlayerScore(Player p, int delta) {
         int oldScore = this.getPlayerScore(p);
         this.setPlayerScore(p, oldScore + delta);

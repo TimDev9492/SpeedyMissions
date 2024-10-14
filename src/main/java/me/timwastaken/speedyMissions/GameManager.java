@@ -158,4 +158,8 @@ public class GameManager {
             p.spigot().sendMessage(next.getMissionChatAnnouncement());
         }
     }
+
+    public GameState getGameState() {
+        return this.state;
+    }
 }

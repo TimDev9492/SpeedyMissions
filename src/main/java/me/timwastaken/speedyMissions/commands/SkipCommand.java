@@ -7,14 +7,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 @Command("skip")
-public class SkipCommand {
+public class SkipCommand extends InGameCommand {
     @Default
     public static void skipMission(CommandSender sender) {
         GameManager manager = GameManager.getInstance();
-        if (!manager.getGameRunning()) {
-            sender.sendMessage(ChatColor.RED + "You can only run this command while the game is running!");
-            return;
-        }
+        if (!checkGameState(sender)) return;
         manager.skipMission();
     }
 }

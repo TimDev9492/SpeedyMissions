@@ -1,6 +1,7 @@
 package me.timwastaken.speedyMissions;
 
 import dev.jorel.commandapi.CommandAPI;
+import me.timwastaken.speedyMissions.commands.PointsCommand;
 import me.timwastaken.speedyMissions.commands.SkipCommand;
 import me.timwastaken.speedyMissions.commands.StartGameCommand;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,6 +17,7 @@ public final class SpeedyMissions extends JavaPlugin {
         // register plugin commands
         CommandAPI.registerCommand(StartGameCommand.class);
         CommandAPI.registerCommand(SkipCommand.class);
+        CommandAPI.registerCommand(PointsCommand.class);
     }
 
     @Override
