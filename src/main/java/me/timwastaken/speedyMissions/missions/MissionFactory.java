@@ -8,10 +8,13 @@ import java.util.function.Supplier;
 
 public class MissionFactory {
     private static final Random rnd = new Random();
+    private static final int MIN_BLOCK_COUNT = 16;
+    private static final int MAX_BLOCK_COUNT = 128;
 
     private static final Map<Class<?>, Integer> missionWeights = Map.of(
             ObtainItemMission.class, 1,
-            KillPlayerMission.class, 1
+            KillPlayerMission.class, 1,
+            PlaceBlocksMission.class, 3
     );
 
     private static final Map<Class<?>, Supplier<Mission>> missionFactories = Map.of(
@@ -19,7 +22,11 @@ public class MissionFactory {
                 Material[] materials = Arrays.stream(Material.values()).filter(Material::isItem).toArray(Material[]::new);
                 return new ObtainItemMission(GameManager.getInstance(), materials[rnd.nextInt(materials.length)]);
             },
-            KillPlayerMission.class, () -> new KillPlayerMission(GameManager.getInstance())
+            KillPlayerMission.class, () -> new KillPlayerMission(GameManager.getInstance()),
+            PlaceBlocksMission.class, () -> new PlaceBlocksMission(
+                    GameManager.getInstance(),
+                    rnd.nextInt(MIN_BLOCK_COUNT, MAX_BLOCK_COUNT + 1)
+            )
     );
 
     public static Mission generateRandomMission() {

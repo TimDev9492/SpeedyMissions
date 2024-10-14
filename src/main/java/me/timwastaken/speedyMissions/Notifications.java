@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class Notifications {
@@ -142,6 +143,15 @@ public class Notifications {
                 ChatColor.GRAY,
                 ChatColor.BOLD,
                 newScore
+        );
+    }
+
+    public static String getBlocksPlacedActionbarTitle(int placed, int blockCount) {
+        return String.format(
+                "%sBlocks placed: %d/%d",
+                ChatColor.GRAY,
+                placed,
+                blockCount
         );
     }
 }

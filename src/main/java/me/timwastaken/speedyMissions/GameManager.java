@@ -162,4 +162,8 @@ public class GameManager {
     public GameState getGameState() {
         return this.state;
     }
+
+    public boolean isPlaying(Player p) {
+        return this.registeredPlayers.contains(p.getUniqueId());
+    }
 }
