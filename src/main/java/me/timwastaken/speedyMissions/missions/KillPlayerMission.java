@@ -3,6 +3,7 @@ package me.timwastaken.speedyMissions.missions;
 import me.timwastaken.speedyMissions.GameManager;
 import me.timwastaken.speedyMissions.Notifications;
 import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

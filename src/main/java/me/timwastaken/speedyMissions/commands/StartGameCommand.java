@@ -4,18 +4,19 @@ import dev.jorel.commandapi.annotations.*;
 import me.timwastaken.speedyMissions.GameManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @Command("start")
 public class StartGameCommand {
     @Default
-    public static void startGame(Player p) {
+    public static void startGame(CommandSender sender) {
         GameManager manager = GameManager.getInstance();
         if (manager.getGameRunning()) {
-            p.sendMessage(ChatColor.RED + "The game is already running!");
+            sender.sendMessage(ChatColor.RED + "The game is already running!");
             return;
         }
         manager.setRegisteredPlayers(Bukkit.getOnlinePlayers());
-        manager.startGame(p.getWorld());
+        manager.startGame();
     }
 }

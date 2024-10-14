@@ -11,13 +11,11 @@ public class GameState {
     private final Collection<UUID> finishedPlayers;
     private Mission activeMission = null;
     private int delta = 0;
-    private long startedAtGameTick;
-    private final World operatingWorld;
+    private long missionStartTime;
 
-    public GameState(Map<UUID, Integer> playerScores, World operatingWorld) {
+    public GameState(Map<UUID, Integer> playerScores) {
         this.playerScores = playerScores;
         this.finishedPlayers = new HashSet<>();
-        this.operatingWorld = operatingWorld;
     }
 
     public void addFinishedPlayer(Player p) {
@@ -34,11 +32,11 @@ public class GameState {
 
     public void setActiveMission(Mission mission) {
         this.activeMission = mission;
-        this.startedAtGameTick = this.operatingWorld.getFullTime();
+        this.missionStartTime = System.currentTimeMillis();
     }
 
-    public long getMissionStartGameTick() {
-        return this.startedAtGameTick;
+    public long getMissionStart() {
+        return this.missionStartTime;
     }
 
     public Mission getActiveMission() {
@@ -74,9 +72,5 @@ public class GameState {
 
     public int getDelta() {
         return delta;
-    }
-
-    public World getOperatingWorld() {
-        return operatingWorld;
     }
 }

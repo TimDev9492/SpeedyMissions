@@ -2,6 +2,10 @@ package me.timwastaken.speedyMissions.missions;
 
 import me.timwastaken.speedyMissions.GameManager;
 import me.timwastaken.speedyMissions.Notifications;
+import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.hover.content.Item;
+import net.md_5.bungee.api.chat.hover.content.Text;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -43,5 +47,35 @@ public class ObtainItemMission extends TickMission {
     @Override
     public long getGameTickDuration() {
         return 2 * GameManager.MINUTES;
+    }
+
+    @Override
+    public BaseComponent[] getMissionChatAnnouncement() {
+        TextComponent text = new TextComponent(
+                Notifications.getChatAnnouncement(this.getMissionDescription())
+        );
+        text.setHoverEvent(new HoverEvent(
+                HoverEvent.Action.SHOW_ITEM,
+                new Item(this.itemMaterial.getKey().toString(), 1, ItemTag.ofNbt(Notifications.getItemName(this.itemMaterial)))
+        ));
+        TextComponent wikiLink = new TextComponent(
+                ChatColor.GREEN + " [Wiki]"
+        );
+        String url = String.format(
+                "https://www.google.com/search?q=%s+site%%3Aminecraft.wiki",
+                this.itemMaterial.name().replaceAll("_", "+").toLowerCase()
+        );
+        wikiLink.setClickEvent(new ClickEvent(
+                ClickEvent.Action.OPEN_URL,
+                url
+        ));
+        wikiLink.setHoverEvent(new HoverEvent(
+                HoverEvent.Action.SHOW_TEXT,
+                new Text(String.format(
+                        "Search the minecraft wiki for '%s'",
+                        Notifications.getItemName(this.itemMaterial)
+                        ))
+        ));
+        return new BaseComponent[] {text, wikiLink};
     }
 }

@@ -91,7 +91,7 @@ public class GameManager {
     /**
      * Start the game.
      */
-    public void startGame(World mainWorld) throws IllegalStateException {
+    public void startGame() throws IllegalStateException {
         if (this.gameRunning) throw new IllegalStateException("The game is already running!");
         this.gameRunning = true;
         this.registeredPlayers.clear();
@@ -104,7 +104,7 @@ public class GameManager {
         for (UUID uuid : this.registeredPlayers) {
             playerScores.put(uuid, 0);
         }
-        this.state = new GameState(playerScores, mainWorld);
+        this.state = new GameState(playerScores);
 
         this.setupNextMission();
 
@@ -155,6 +155,7 @@ public class GameManager {
                     String.format("%s%s", ChatColor.GREEN, next.getMissionDescription()),
                     5, 100, 5
             );
+            p.spigot().sendMessage(next.getMissionChatAnnouncement());
         }
     }
 }

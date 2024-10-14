@@ -1,6 +1,9 @@
 package me.timwastaken.speedyMissions.missions;
 
 import me.timwastaken.speedyMissions.GameManager;
+import me.timwastaken.speedyMissions.Notifications;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
@@ -24,4 +27,9 @@ public abstract class Mission {
     }
     public abstract String getMissionDescription();
     public abstract long getGameTickDuration();
+    public BaseComponent[] getMissionChatAnnouncement() {
+        return new BaseComponent[] {
+            new TextComponent(Notifications.getChatAnnouncement(this.getMissionDescription()))
+        };
+    }
 }

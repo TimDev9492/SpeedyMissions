@@ -70,6 +70,13 @@ task cleanBuildDeploy(type: GradleBuild) {
     tasks = ['clean', 'build', 'deploy']
 }
 
+// create a task to copy the output files in build/libs to a destination folder
+task copyJar(type: Copy) {
+    from 'build/libs'
+    into 'C:/Users/kerst/Documents/minecraftServer/plugins/'
+    include "$jarFile"
+}
+
 processResources {
     def props = [version: version]
     inputs.properties props

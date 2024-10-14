@@ -2,6 +2,7 @@ package me.timwastaken.speedyMissions;
 
 import me.timwastaken.speedyMissions.missions.Mission;
 import me.timwastaken.speedyMissions.missions.ObtainItemMission;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -95,8 +96,18 @@ public class Notifications {
         return String.format("%sTime remaining:", ChatColor.GOLD);
     }
 
-    public static String getTimeRemainingLine(long ticksRemaining) {
-        String timeStr = DurationFormatUtils.formatDuration(Math.max(ticksRemaining / 20 * 1000, 0), "mm:ss");
+    public static String getTimeRemainingLine(long millisRemaining) {
+        String timeStr = DurationFormatUtils.formatDuration(Math.max(millisRemaining, 0), "mm:ss");
         return String.format("%s%s", ChatColor.GRAY, timeStr);
+    }
+
+    public static String getChatAnnouncement(String missionDescription) {
+        return String.format(
+                "%s%sNew mission: %s%s",
+                PREFIX,
+                ChatColor.YELLOW,
+                ChatColor.AQUA,
+                missionDescription
+        );
     }
 }

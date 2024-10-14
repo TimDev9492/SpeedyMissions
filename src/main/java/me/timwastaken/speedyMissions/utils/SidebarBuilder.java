@@ -11,6 +11,7 @@ public class SidebarBuilder {
     private final String objectiveName;
     private String sidebarTitle;
     private final List<String> lines;
+    private static final int MAX_LINES = 15;
 
     public SidebarBuilder(String objectiveName) {
         this.objectiveName = objectiveName;
@@ -35,6 +36,10 @@ public class SidebarBuilder {
         this.lines.add(empty.toString());
         this.emptyCount++;
         return this;
+    }
+
+    public int getRemainingLineCount() {
+        return MAX_LINES - this.lines.size();
     }
 
     public Scoreboard build() {
