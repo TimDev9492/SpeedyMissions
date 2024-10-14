@@ -3,15 +3,12 @@ package me.timwastaken.speedyMissions;
 import me.timwastaken.speedyMissions.missions.Mission;
 import me.timwastaken.speedyMissions.missions.MissionFactory;
 import me.timwastaken.speedyMissions.missions.ObtainItemMission;
-import me.timwastaken.speedyMissions.utils.ConditionalIterator;
-import me.timwastaken.speedyMissions.utils.PlayerNameComparatorByUUID;
-import me.timwastaken.speedyMissions.utils.ValueSortedMap;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import me.timwastaken.speedyMissions.utils.*;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -53,6 +50,7 @@ public class GameManager {
             for (Player player : players) {
                 if (this.state.hasFinished(player)) continue;
                 this.state.addFinishedPlayer(player);
+                this.state.addPlayerScore(player, delta);
                 Bukkit.broadcastMessage(Notifications.getPlayerFinishedNotification(player, delta));
             }
             for (Iterator<Player> it = this.getActivePlayerIterator(); it.hasNext(); ) {
@@ -78,9 +76,11 @@ public class GameManager {
 
     public Iterator<Player> getActivePlayerIterator() {
         return new ConditionalIterator<>(
-                this.registeredPlayers.iterator(),
-                uuid -> Bukkit.getPlayer(uuid) != null,
-                Bukkit::getPlayer
+                new MappingIterator<>(
+                    this.registeredPlayers.iterator(),
+                    Bukkit::getPlayer
+                ),
+                Objects::nonNull
         );
     }
 
@@ -91,9 +91,11 @@ public class GameManager {
     /**
      * Start the game.
      */
-    public void startGame() throws IllegalStateException {
+    public void startGame(World mainWorld) throws IllegalStateException {
         if (this.gameRunning) throw new IllegalStateException("The game is already running!");
         this.gameRunning = true;
+        this.registeredPlayers.clear();
+        Bukkit.getOnlinePlayers().forEach(p -> this.registeredPlayers.add(p.getUniqueId()));
 
         Map<UUID, Integer> playerScores = new ValueSortedMap<>(
                 Integer::compareTo,
@@ -102,9 +104,20 @@ public class GameManager {
         for (UUID uuid : this.registeredPlayers) {
             playerScores.put(uuid, 0);
         }
-        this.state = new GameState(playerScores);
+        this.state = new GameState(playerScores, mainWorld);
 
         this.setupNextMission();
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Scoreboard sidebar = ScoreboardWrapper.getGameStateScoreboard(state);
+                for (Iterator<Player> it = getActivePlayerIterator(); it.hasNext(); ) {
+                    Player active = it.next();
+                    active.setScoreboard(sidebar);
+                }
+            }
+        }.runTaskTimer(SpeedyMissions.getInstance(), 0L, 1L);
     }
 
     public boolean getGameRunning() {

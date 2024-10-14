@@ -1,23 +1,18 @@
 package me.timwastaken.speedyMissions.utils;
 
-import org.bukkit.entity.Player;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class ConditionalIterator<T, O> implements Iterator<O> {
+public class ConditionalIterator<T> implements Iterator<T> {
     private final Iterator<T> iterator;
     private final Predicate<T> condition;
-    private final Function<T, O> transform;
 
     private T peeked = null;
 
-    public ConditionalIterator(Iterator<T> iterator, Predicate<T> condition, Function<T, O> transform) {
+    public ConditionalIterator(Iterator<T> iterator, Predicate<T> condition) {
         this.iterator = iterator;
         this.condition = condition;
-        this.transform = transform;
     }
 
     @Override
@@ -30,8 +25,8 @@ public class ConditionalIterator<T, O> implements Iterator<O> {
     }
 
     @Override
-    public O next() {
+    public T next() {
         if (this.peeked == null) throw new NoSuchElementException();
-        return this.transform.apply(this.peeked);
+        return this.peeked;
     }
 }

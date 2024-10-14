@@ -14,7 +14,7 @@ public class MissionFactory {
 
     private static final Map<Class<?>, Integer> missionWeights = Map.of(
             ObtainItemMission.class, 1,
-            KillPlayerMission.class, 5
+            KillPlayerMission.class, 1
     );
 
     private static final Map<Class<?>, Supplier<Mission>> missionFactories = Map.of(

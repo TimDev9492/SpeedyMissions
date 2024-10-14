@@ -34,6 +34,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.apache.commons:commons-lang3:3.0")
     compileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
     compileOnly("dev.jorel:commandapi-annotations:9.5.3")
     annotationProcessor("dev.jorel:commandapi-annotations:9.5.3")
