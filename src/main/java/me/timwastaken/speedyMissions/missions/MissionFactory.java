@@ -2,12 +2,15 @@ package me.timwastaken.speedyMissions.missions;
 
 import me.timwastaken.speedyMissions.GameManager;
 import org.bukkit.Material;
+import org.bukkit.Registry;
 import org.bukkit.WorldBorder;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.StreamSupport;
 
 public class MissionFactory {
     private static final Random rnd = new Random();
@@ -22,7 +25,8 @@ public class MissionFactory {
             PlaceBlocksMission.class, 0,
             ReceiveDamageMission.class, 0,
             CoverDistanceMission.class, 0,
-            KillMobMission.class, 1
+            KillMobMission.class, 0,
+            GetPotionEffectMission.class, 1
     );
 
     private static final Map<Class<?>, Supplier<Mission>> missionFactories = Map.of(
@@ -76,6 +80,15 @@ public class MissionFactory {
             KillMobMission.class, () -> {
                 EntityType[] possibleTypes = Arrays.stream(EntityType.values()).filter(EntityType::isAlive).toArray(EntityType[]::new);
                 return new KillMobMission(GameManager.getInstance(), possibleTypes[rnd.nextInt(possibleTypes.length)]);
+            },
+            GetPotionEffectMission.class, () -> {
+                PotionEffectType[] possibleEffects = StreamSupport.stream(
+                        Spliterators.spliteratorUnknownSize(Registry.EFFECT.iterator(), 0), false
+                ).toArray(PotionEffectType[]::new);
+                return new GetPotionEffectMission(
+                        GameManager.getInstance(),
+                        possibleEffects[rnd.nextInt(possibleEffects.length)]
+                );
             }
     );
 
