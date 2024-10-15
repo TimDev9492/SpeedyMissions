@@ -78,7 +78,11 @@ public class Notifications {
     }
 
     public static String getItemName(Material mat) {
-        return Arrays.stream(mat.name().toLowerCase().split("_"))
+        return formatEnumName(mat.name());
+    }
+
+    public static String formatEnumName(String enumName) {
+        return Arrays.stream(enumName.toLowerCase().split("_"))
                 .map(word -> Character.toUpperCase(word.charAt(0)) + word.substring(1))
                 .collect(Collectors.joining(" "));
     }

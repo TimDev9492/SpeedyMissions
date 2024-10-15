@@ -3,6 +3,7 @@ package me.timwastaken.speedyMissions.missions;
 import me.timwastaken.speedyMissions.GameManager;
 import org.bukkit.Material;
 import org.bukkit.WorldBorder;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.*;
@@ -20,7 +21,8 @@ public class MissionFactory {
             KillPlayerMission.class, 0,
             PlaceBlocksMission.class, 0,
             ReceiveDamageMission.class, 0,
-            CoverDistanceMission.class, 1
+            CoverDistanceMission.class, 0,
+            KillMobMission.class, 1
     );
 
     private static final Map<Class<?>, Supplier<Mission>> missionFactories = Map.of(
@@ -70,7 +72,11 @@ public class MissionFactory {
             CoverDistanceMission.class, () -> new CoverDistanceMission(
                     GameManager.getInstance(),
                     rnd.nextInt(MIN_DISTANCE_100m, MAX_DISTANCE_100m + 1) * 100
-            )
+            ),
+            KillMobMission.class, () -> {
+                EntityType[] possibleTypes = Arrays.stream(EntityType.values()).filter(EntityType::isAlive).toArray(EntityType[]::new);
+                return new KillMobMission(GameManager.getInstance(), possibleTypes[rnd.nextInt(possibleTypes.length)]);
+            }
     );
 
     public static Mission generateRandomMission() {
