@@ -12,12 +12,15 @@ public class MissionFactory {
     private static final Random rnd = new Random();
     private static final int MIN_BLOCK_COUNT = 16;
     private static final int MAX_BLOCK_COUNT = 128;
+    private static final int MIN_DISTANCE_100m = 3;
+    private static final int MAX_DISTANCE_100m = 25;
 
     private static final Map<Class<?>, Integer> missionWeights = Map.of(
             ObtainItemMission.class, 0,
             KillPlayerMission.class, 0,
             PlaceBlocksMission.class, 0,
-            ReceiveDamageMission.class, 1
+            ReceiveDamageMission.class, 0,
+            CoverDistanceMission.class, 1
     );
 
     private static final Map<Class<?>, Supplier<Mission>> missionFactories = Map.of(
@@ -63,7 +66,11 @@ public class MissionFactory {
                         GameManager.getInstance(),
                         possibleCauses[rnd.nextInt(possibleCauses.length)]
                 );
-            }
+            },
+            CoverDistanceMission.class, () -> new CoverDistanceMission(
+                    GameManager.getInstance(),
+                    rnd.nextInt(MIN_DISTANCE_100m, MAX_DISTANCE_100m + 1) * 100
+            )
     );
 
     public static Mission generateRandomMission() {

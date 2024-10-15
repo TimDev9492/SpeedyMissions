@@ -5,6 +5,7 @@ import me.timwastaken.speedyMissions.missions.ObtainItemMission;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -152,6 +153,21 @@ public class Notifications {
                 ChatColor.GRAY,
                 placed,
                 blockCount
+        );
+    }
+
+    public static String getWrongDimensionActionbarNotification() {
+        return String.format(
+                "%sYou are in a different dimension than the one you started in!",
+                ChatColor.DARK_GRAY
+        );
+    }
+
+    public static String getCoverDistanceActionbarNotification(double distance) {
+        return String.format(
+                "%sDistance covered: %.1fm",
+                ChatColor.GRAY,
+                distance
         );
     }
 }
