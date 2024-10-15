@@ -141,6 +141,7 @@ public class GameManager {
      * Generate and start a new mission.
      */
     private void setupNextMission() {
+        if (this.state.getActiveMission() != null) this.state.getActiveMission().stopMission();
         Mission next = this.generateNewMission();
         next.onPlayerFinishMission(this.playerFinishCallback);
         this.state.clearFinishedPlayers();
