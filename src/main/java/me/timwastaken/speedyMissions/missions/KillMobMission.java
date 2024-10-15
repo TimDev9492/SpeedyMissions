@@ -28,7 +28,7 @@ public class KillMobMission extends EventMission {
 
     @Override
     public long getGameTickDuration() {
-        return GameManager.MINUTES * 4;
+        return GameManager.MINUTES * 3;
     }
 
     @EventHandler

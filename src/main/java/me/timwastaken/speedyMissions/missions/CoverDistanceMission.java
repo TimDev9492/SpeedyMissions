@@ -58,6 +58,6 @@ public class CoverDistanceMission extends TickMission {
 
     @Override
     public long getGameTickDuration() {
-        return 18L * this.distance * GameManager.SECONDS / 100;
+        return this.distance * GameManager.SECONDS / 5;
     }
 }

@@ -56,7 +56,7 @@ public class ReceiveDamageMission extends EventMission {
 
     @Override
     public long getGameTickDuration() {
-        return GameManager.MINUTES * 3;
+        return GameManager.MINUTES * 2;
     }
 
     @EventHandler

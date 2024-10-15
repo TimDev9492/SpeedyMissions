@@ -48,7 +48,7 @@ public class PlaceBlocksMission extends TickEventMission {
 
     @Override
     public long getGameTickDuration() {
-        return this.blockCount * GameManager.SECONDS / 3;
+        return this.blockCount * GameManager.SECONDS / 2;
     }
 
     @EventHandler
