@@ -18,7 +18,9 @@ jobs:
           java-version: 21
       - name: Set variables
         run: |
-          echo "plugin_jar=$(./gradlew printFilename -q | grep 'filename=' | cut -d'=' -f2)" >> $GITHUB_ENV
+          metadata=$(./gradlew printMetadata -q)
+          echo "plugin_jar=$(echo "$metadata" | grep 'filename=' | cut -d'=' -f2)" >> $GITHUB_ENV
+          echo "plugin_version=$(echo "$metadata" | grep 'filename=' | cut -d'=' -f2)" >> $GITHUB_ENV
       - name: Build plugin
         run: ./gradlew build
       - name: Create github release
