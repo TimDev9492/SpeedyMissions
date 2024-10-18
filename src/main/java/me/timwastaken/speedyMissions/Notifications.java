@@ -1,16 +1,12 @@
 package me.timwastaken.speedyMissions;
 
 import me.timwastaken.speedyMissions.missions.Mission;
-import me.timwastaken.speedyMissions.missions.ObtainItemMission;
-import net.md_5.bungee.api.chat.BaseComponent;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class Notifications {
