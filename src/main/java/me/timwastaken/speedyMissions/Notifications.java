@@ -174,4 +174,21 @@ public class Notifications {
                 distance
         );
     }
+
+    public static String getDeathNotification() {
+        return String.format(
+                "%s%sYou died! %s[-1]",
+                PREFIX,
+                ChatColor.RED,
+                ChatColor.DARK_RED
+        );
+    }
+
+    public static String getGameStoppedNotification() {
+        return String.format(
+                "%s%sThe game was stopped!",
+                PREFIX,
+                ChatColor.GOLD
+        );
+    }
 }

@@ -30,18 +30,20 @@ public class GameManager {
         this.registeredPlayers = new ArrayList<>();
         this.playerFinishCallback = players -> {
             // skip mission if all players finish at the same time
-//            boolean allFinished = true;
-//            for (Iterator<Player> it = this.getActivePlayerIterator(); it.hasNext(); ) {
-//                Player p = it.next();
-//                if (!players.contains(p)) {
-//                    allFinished = false;
-//                    break;
-//                }
-//            }
-//            if (allFinished) {
-//                this.setupNextMission();
-//                return;
-//            }
+            boolean allFinished = true;
+            int playerCount = 0;
+            for (Iterator<Player> it = this.getActivePlayerIterator(); it.hasNext(); ) {
+                Player p = it.next();
+                playerCount++;
+                if (!players.contains(p)) {
+                    allFinished = false;
+                    break;
+                }
+            }
+            if (allFinished && playerCount > 1) {
+                this.setupNextMission();
+                return;
+            }
 
             if (players.isEmpty()) return;
             int delta = this.state.getDelta();
@@ -73,6 +75,7 @@ public class GameManager {
     private GameState state;
     private boolean gameRunning = false;
     private final Consumer<Collection<Player>> playerFinishCallback;
+    private int gameLoop = -1;
 
     public Iterator<Player> getActivePlayerIterator() {
         return new ConditionalIterator<>(
@@ -98,7 +101,7 @@ public class GameManager {
         Bukkit.getOnlinePlayers().forEach(p -> this.registeredPlayers.add(p.getUniqueId()));
 
         Map<UUID, Integer> playerScores = new ValueSortedMap<>(
-                Integer::compareTo,
+                (a, b) -> b - a,
                 new PlayerNameComparatorByUUID()
         );
         for (UUID uuid : this.registeredPlayers) {
@@ -108,16 +111,33 @@ public class GameManager {
 
         this.setupNextMission();
 
-        new BukkitRunnable() {
+        this.gameLoop = new BukkitRunnable() {
             @Override
             public void run() {
+                if (state.getMillisRemaining() <= 0) {
+                    skipMission();
+                }
                 Scoreboard sidebar = ScoreboardWrapper.getGameStateScoreboard(state);
                 for (Iterator<Player> it = getActivePlayerIterator(); it.hasNext(); ) {
                     Player active = it.next();
                     active.setScoreboard(sidebar);
                 }
             }
-        }.runTaskTimer(SpeedyMissions.getInstance(), 0L, 1L);
+        }.runTaskTimer(SpeedyMissions.getInstance(), 0L, 1L).getTaskId();
+    }
+
+    public void stopGame() throws IllegalStateException {
+        if (!this.gameRunning) throw new IllegalStateException("Can't stop the game when it's not running!");
+        // clean up
+        Bukkit.getScheduler().cancelTask(this.gameLoop);
+        for (Iterator<Player> it = this.getActivePlayerIterator(); it.hasNext(); ) {
+            Player p = it.next();
+            if (Bukkit.getScoreboardManager() == null) continue;
+            p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+        }
+        this.registeredPlayers.clear();
+        this.state = null;
+        this.gameRunning = false;
     }
 
     public boolean getGameRunning() {

@@ -1,5 +1,6 @@
 package me.timwastaken.speedyMissions;
 
+import me.timwastaken.speedyMissions.missions.KillPlayerMission;
 import me.timwastaken.speedyMissions.missions.Mission;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -89,5 +90,9 @@ public class GameState {
 
     public int getDelta() {
         return delta;
+    }
+
+    public long getMillisRemaining() {
+        return this.missionStartTime + this.activeMission.getGameTickDuration() * 50 - System.currentTimeMillis();
     }
 }

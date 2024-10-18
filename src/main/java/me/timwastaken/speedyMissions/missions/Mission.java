@@ -32,4 +32,7 @@ public abstract class Mission {
             new TextComponent(Notifications.getChatAnnouncement(this.getMissionDescription()))
         };
     }
+    public boolean hasDeathPenalty(Player p) {
+        return true;
+    }
 }

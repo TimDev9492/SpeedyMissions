@@ -20,13 +20,14 @@ public class MissionFactory {
     private static final int MAX_DISTANCE_100m = 25;
 
     private static final Map<Class<?>, Integer> missionWeights = Map.of(
-            ObtainItemMission.class, 0,
-            KillPlayerMission.class, 0,
-            PlaceBlocksMission.class, 0,
-            ReceiveDamageMission.class, 0,
-            CoverDistanceMission.class, 0,
-            KillMobMission.class, 0,
-            GetPotionEffectMission.class, 1
+            ObtainItemMission.class, 1,
+            KillPlayerMission.class, 1,
+            PlaceBlocksMission.class, 1,
+            ReceiveDamageMission.class, 1,
+            CoverDistanceMission.class, 1,
+            KillMobMission.class, 1,
+            GetPotionEffectMission.class, 1,
+            KillYourselfMission.class, 5
     );
 
     private static final Map<Class<?>, Supplier<Mission>> missionFactories = Map.of(
@@ -89,7 +90,8 @@ public class MissionFactory {
                         GameManager.getInstance(),
                         possibleEffects[rnd.nextInt(possibleEffects.length)]
                 );
-            }
+            },
+            KillYourselfMission.class, () -> new KillYourselfMission(GameManager.getInstance())
     );
 
     public static Mission generateRandomMission() {

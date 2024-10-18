@@ -46,9 +46,7 @@ public class ScoreboardWrapper {
         builder
                 .addEmptyLine()
                 .addLine(Notifications.getTimeRemainingTitle())
-                .addLine(Notifications.getTimeRemainingLine(
-                        state.getMissionStart() + state.getActiveMission().getGameTickDuration() * 50 - System.currentTimeMillis()
-                ));
+                .addLine(Notifications.getTimeRemainingLine(state.getMillisRemaining()));
         return builder.build();
     }
 
