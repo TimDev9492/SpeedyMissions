@@ -35,4 +35,10 @@ public abstract class Mission {
     public boolean hasDeathPenalty(Player p) {
         return true;
     }
+    public boolean hasProgressScores() {
+        return false;
+    }
+    public int getPlayerProgress(Player p) {
+        return Integer.MIN_VALUE;
+    }
 }

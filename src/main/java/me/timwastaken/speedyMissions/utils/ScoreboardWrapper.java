@@ -1,17 +1,23 @@
 package me.timwastaken.speedyMissions.utils;
 
+import me.timwastaken.speedyMissions.GameManager;
 import me.timwastaken.speedyMissions.GameState;
 import me.timwastaken.speedyMissions.Notifications;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Criteria;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.*;
 
 public class ScoreboardWrapper {
     private static final String OBJECTIVE_NAME = "speedymissions_gamestate";
+    private static final String PROGRESS_OBJECTIVE_NAME = "speedymissions_progress";
 
-    public static Scoreboard getGameStateScoreboard(GameState state) {
+    public static Scoreboard getGameStateScoreboard(GameState state) throws IllegalStateException {
+        // sidebar
         SidebarBuilder builder = new SidebarBuilder(OBJECTIVE_NAME);
         builder.setTitle(Notifications.getScoreboardTitle())
                 .addEmptyLine()
@@ -47,7 +53,23 @@ public class ScoreboardWrapper {
                 .addEmptyLine()
                 .addLine(Notifications.getTimeRemainingTitle())
                 .addLine(Notifications.getTimeRemainingLine(state.getMillisRemaining()));
-        return builder.build();
+        Scoreboard infoBoard = builder.build();
+
+        // player progress
+        if (!state.getActiveMission().hasProgressScores()) return infoBoard;
+        Objective progress = infoBoard.registerNewObjective(
+                PROGRESS_OBJECTIVE_NAME,
+                Criteria.DUMMY,
+                "Player progress"
+        );
+        progress.setDisplaySlot(DisplaySlot.PLAYER_LIST);
+        for (Iterator<Player> it = GameManager.getInstance().getActivePlayerIterator(); it.hasNext(); ) {
+            Player p = it.next();
+            int progressScore = state.getActiveMission().getPlayerProgress(p);
+            progress.getScore(p.getName()).setScore(progressScore);
+        }
+
+        return infoBoard;
     }
 
     /**

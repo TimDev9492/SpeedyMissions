@@ -100,6 +100,8 @@ public class GameManager {
         this.registeredPlayers.clear();
         Bukkit.getOnlinePlayers().forEach(p -> this.registeredPlayers.add(p.getUniqueId()));
 
+        Bukkit.getWorlds().forEach(world -> world.setGameRule(GameRule.KEEP_INVENTORY, true));
+
         Map<UUID, Integer> playerScores = new ValueSortedMap<>(
                 (a, b) -> b - a,
                 new PlayerNameComparatorByUUID()
@@ -129,6 +131,7 @@ public class GameManager {
     public void stopGame() throws IllegalStateException {
         if (!this.gameRunning) throw new IllegalStateException("Can't stop the game when it's not running!");
         // clean up
+        Bukkit.getWorlds().forEach(world -> world.setGameRule(GameRule.KEEP_INVENTORY, false));
         Bukkit.getScheduler().cancelTask(this.gameLoop);
         for (Iterator<Player> it = this.getActivePlayerIterator(); it.hasNext(); ) {
             Player p = it.next();

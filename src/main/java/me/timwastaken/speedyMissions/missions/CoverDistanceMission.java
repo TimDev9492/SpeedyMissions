@@ -60,4 +60,14 @@ public class CoverDistanceMission extends TickMission {
     public long getGameTickDuration() {
         return this.distance * GameManager.SECONDS / 5;
     }
+
+    @Override
+    public boolean hasProgressScores() {
+        return true;
+    }
+
+    @Override
+    public int getPlayerProgress(Player p) {
+        return (int) Math.floor(this.playerOrigins.get(p.getUniqueId()).distance(p.getLocation()));
+    }
 }

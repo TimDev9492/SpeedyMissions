@@ -38,6 +38,7 @@ public final class SpeedyMissions extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
         this.getLogger().info("Unloading Plugin...");
+        if (GameManager.getInstance().getGameRunning()) GameManager.getInstance().stopGame();
     }
 
     public static SpeedyMissions getInstance() {

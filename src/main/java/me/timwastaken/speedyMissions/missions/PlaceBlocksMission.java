@@ -51,6 +51,16 @@ public class PlaceBlocksMission extends TickEventMission {
         return this.blockCount * GameManager.SECONDS / 2;
     }
 
+    @Override
+    public boolean hasProgressScores() {
+        return true;
+    }
+
+    @Override
+    public int getPlayerProgress(Player p) {
+        return this.blocksPlaced.getOrDefault(p.getUniqueId(), 0);
+    }
+
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Player placer = event.getPlayer();
