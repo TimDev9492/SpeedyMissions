@@ -1,6 +1,7 @@
 package me.timwastaken.speedyMissions.missions;
 
 import me.timwastaken.speedyMissions.GameManager;
+import me.timwastaken.speedyMissions.utils.ClutchType;
 import org.bukkit.Material;
 import org.bukkit.Registry;
 import org.bukkit.WorldBorder;
@@ -18,6 +19,8 @@ public class MissionFactory {
     private static final int MAX_BLOCK_COUNT = 128;
     private static final int MIN_DISTANCE_100m = 3;
     private static final int MAX_DISTANCE_100m = 25;
+    private static final int MIN_CLUTCH_HEIGHT_SQRT = (int) Math.sqrt(4);
+    private static final int MAX_CLUTCH_HEIGHT_SQRT = (int) Math.sqrt(40);
 
     private static final Map<Class<?>, Integer> missionWeights = Map.of(
             ObtainItemMission.class, 1,
@@ -27,7 +30,8 @@ public class MissionFactory {
             CoverDistanceMission.class, 1,
             KillMobMission.class, 1,
             GetPotionEffectMission.class, 1,
-            KillYourselfMission.class, 5
+            KillYourselfMission.class, 1,
+            DoClutchMission.class, 1
     );
 
     private static final Map<Class<?>, Supplier<Mission>> missionFactories = Map.of(
@@ -91,7 +95,17 @@ public class MissionFactory {
                         possibleEffects[rnd.nextInt(possibleEffects.length)]
                 );
             },
-            KillYourselfMission.class, () -> new KillYourselfMission(GameManager.getInstance())
+            KillYourselfMission.class, () -> new KillYourselfMission(GameManager.getInstance()),
+            DoClutchMission.class, () -> {
+                double clutchHeightSqrt = rnd.nextInt(MIN_CLUTCH_HEIGHT_SQRT, MAX_CLUTCH_HEIGHT_SQRT);
+                double clutchHeight = clutchHeightSqrt * clutchHeightSqrt;
+                ClutchType[] possibleClutchTypes = ClutchType.values();
+                return new DoClutchMission(
+                        GameManager.getInstance(),
+                        possibleClutchTypes[rnd.nextInt(possibleClutchTypes.length)],
+                        clutchHeight
+                );
+            }
     );
 
     public static Mission generateRandomMission() {

@@ -3,7 +3,6 @@ package me.timwastaken.speedyMissions.missions;
 import me.timwastaken.speedyMissions.GameManager;
 import me.timwastaken.speedyMissions.Notifications;
 import net.md_5.bungee.api.chat.*;
-import net.md_5.bungee.api.chat.hover.content.Item;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
