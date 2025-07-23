@@ -76,6 +76,7 @@ public class GameManager {
     private boolean gameRunning = false;
     private final Consumer<Collection<Player>> playerFinishCallback;
     private int gameLoop = -1;
+    private long gameStart;
 
     public Iterator<Player> getActivePlayerIterator() {
         return new ConditionalIterator<>(
@@ -97,6 +98,7 @@ public class GameManager {
     public void startGame() throws IllegalStateException {
         if (this.gameRunning) throw new IllegalStateException("The game is already running!");
         this.gameRunning = true;
+        this.gameStart = System.currentTimeMillis();
         this.registeredPlayers.clear();
         Bukkit.getOnlinePlayers().forEach(p -> this.registeredPlayers.add(p.getUniqueId()));
 
@@ -189,5 +191,9 @@ public class GameManager {
 
     public boolean isPlaying(Player p) {
         return this.registeredPlayers.contains(p.getUniqueId());
+    }
+
+    public long getGameElapsedMillis() {
+        return System.currentTimeMillis() - this.gameStart;
     }
 }
